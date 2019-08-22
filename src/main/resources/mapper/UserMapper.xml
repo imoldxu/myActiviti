@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.x.flow.xflow.mapper.UserMapper">
+
+	<resultMap id="UserMap" type="com.x.flow.xflow.entity.User" autoMapping="true">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<collection property="roles"
+			ofType="com.x.flow.xflow.entity.Role">
+			<id column="rid" property="id" jdbcType="INTEGER" />
+			<result column="rname" property="name" jdbcType="VARCHAR" />
+			<collection property="permissions"
+				ofType="com.x.flow.xflow.entity.Permission">
+				<id column="pid" property="id" jdbcType="INTEGER" />
+				<result column="pname" property="name" jdbcType="VARCHAR" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="selectUserByPhone" resultMap="UserMap">
+		SELECT t_user.*,
+		t_role.id as rid, t_role.name as rname, t_permission.id as pid,
+		t_permission.name as pname
+		FROM t_user LEFT JOIN t_user_role ON t_user.id = t_user_role.uid
+		LEFT JOIN t_role ON t_user_role.rid = t_role.id
+		LEFT JOIN t_role_permission ON t_role_permission.rid = t_role.id
+		LEFT JOIN t_permission ON t_role_permission.pid = t_permission.id
+		WHERE t_user.phone = #{phone, jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectUserById" resultMap="UserMap">
+		SELECT t_user.*,
+		t_role.id as rid, t_role.name as rname, t_permission.id as pid,
+		t_permission.name as pname
+		FROM t_user LEFT JOIN t_user_role ON t_user.id = t_user_role.uid
+		LEFT JOIN t_role ON t_user_role.rid = t_role.id
+		LEFT JOIN t_role_permission ON t_role_permission.rid = t_role.id
+		LEFT JOIN t_permission ON t_role_permission.pid = t_permission.id
+		WHERE t_user.id = #{uid, jdbcType=INTEGER}
+	</select>
+
+</mapper>

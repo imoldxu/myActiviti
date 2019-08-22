@@ -1,0 +1,55 @@
+server:
+  port : 9600
+  
+spring:
+  application:
+    name: workflow
+  datasource:
+    name: workflow
+    url: jdbc:mysql://127.0.0.1:3306/myloan?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useUnicode=true
+    username: root
+    password: 
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 50
+    initialSize: 10
+    maxWait: 60000
+    minIdle: 10
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+#redisson
+redisson:
+  address: redis://127.0.0.1:6379
+  password: hk666
+
+#workflow
+
+
+#actuator
+management:
+  endpoint:
+    web:
+      exposure:
+        include: '*'
+    health:
+      show-details: always
+  security:
+    enabled: false
+
+#mybatis
+mybatis:
+  typeAliasesPackage: com.x.workflow.core.entity
+  mapperLocations: classpath:mapper/*.xml     
+ 
+#log
+logging:
+  level:
+    root: INFO
