@@ -29,6 +29,11 @@ import com.x.flow.xflow.mapper.UserRoleMapper;
 
 import tk.mybatis.mapper.entity.Example;
 
+/**
+ * 用户、角色管理
+ * @author 老徐
+ *
+ */
 @Service
 public class UserService {
 
@@ -177,6 +182,7 @@ public class UserService {
 		if(user != null){
 			throw new HandleException("用户已存在");
 		}else{
+			//添加用户的同时添加Activiti的用户，并且设置其角色
 			user = new User();
 			user.setPhone(phone);
 			user.setPassword(password);

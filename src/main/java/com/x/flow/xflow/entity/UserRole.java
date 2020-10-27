@@ -1,7 +1,8 @@
 package com.x.flow.xflow.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.EmbeddedId;
+//import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.ibatis.type.JdbcType;
@@ -11,10 +12,12 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @Table(name="t_user_role")
 public class UserRole {
 
+	@EmbeddedId
 	@Column(name="uid")
 	@ColumnType(column="uid", jdbcType=JdbcType.INTEGER)
 	public Integer uid;
 
+	@EmbeddedId
 	@Column(name="rid")
 	@ColumnType(column="rid", jdbcType=JdbcType.INTEGER)
 	public Integer rid;

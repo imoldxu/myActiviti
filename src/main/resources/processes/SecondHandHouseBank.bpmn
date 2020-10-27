@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="mortgageloan" name="抵押贷款" isExecutable="true" activiti:candidateStarterGroups="2">
+  <process id="sencondHandHouseBank" name="二手房商贷" isExecutable="true" activiti:candidateStarterGroups="2">
     <startEvent id="startevent1" name="Start" activiti:initiator="starterId"></startEvent>
     <userTask id="createApply" name="创建工单" activiti:assignee="#{sellerId}"></userTask>
     <userTask id="firstAdult" name="预审" activiti:candidateGroups="3">
@@ -22,7 +22,7 @@
     <sequenceFlow id="flow4" sourceRef="firstAdultExclusive" targetRef="prepareMaterial">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${firstAdultResult == true }]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="bankAdult" name="银行审核" activiti:assignee="#{sellerId}">
+    <userTask id="bankAdult" name="银行审核" activiti:candidateGroups="4">
       <extensionElements>
         <activiti:taskListener event="create" class="com.x.flow.xflow.listener.TaskCreateListener"></activiti:taskListener>
         <activiti:taskListener event="complete" class="com.x.flow.xflow.listener.TaskCompleteListener"></activiti:taskListener>
@@ -34,24 +34,29 @@
     <sequenceFlow id="flow7" sourceRef="bankAdultExclusive" targetRef="prepareMaterial">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bankAdultResult == false}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="prepareContract" name="准备抵押合同" activiti:assignee="#{sellerId}"></userTask>
-    <sequenceFlow id="flow8" sourceRef="bankAdultExclusive" targetRef="prepareContract">
+    <userTask id="prepareContract" name="准备抵押合同" activiti:assignee="#{bankerId}"></userTask>
+    <sequenceFlow id="flow8" sourceRef="bankAdultExclusive" targetRef="transferOwnership">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bankAdultResult == true}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="mortgage" name="办理抵押" activiti:candidateGroups="5"></userTask>
-    <sequenceFlow id="flow9" sourceRef="prepareContract" targetRef="mortgage"></sequenceFlow>
     <userTask id="makeLoans" name="银行放款" activiti:assignee="#{sellerId}"></userTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="firstAdultExclusive" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${firstAdultResult ==false}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="mortgage" targetRef="makeLoans"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="makeLoans" targetRef="endevent1"></sequenceFlow>
-    <businessRuleTask id="businessruletask1" name="Business rule task"></businessRuleTask>
+    <userTask id="transferOwnership" name="过户" activiti:candidateGroups="5"></userTask>
+    <sequenceFlow id="flow19" sourceRef="transferOwnership" targetRef="prepareContract"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="prepareContract" targetRef="mortgage"></sequenceFlow>
+    <userTask id="assess" name="评估正评" activiti:candidateGroups="3"></userTask>
+    <sequenceFlow id="flow21" sourceRef="mortgage" targetRef="assess"></sequenceFlow>
+    <userTask id="getHisRight" name="取他权" activiti:candidateGroups="5"></userTask>
+    <sequenceFlow id="flow22" sourceRef="assess" targetRef="getHisRight"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="getHisRight" targetRef="makeLoans"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_mortgageloan">
-    <bpmndi:BPMNPlane bpmnElement="mortgageloan" id="BPMNPlane_mortgageloan">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_sencondHandHouseBank">
+    <bpmndi:BPMNPlane bpmnElement="sencondHandHouseBank" id="BPMNPlane_sencondHandHouseBank">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -74,22 +79,28 @@
         <omgdc:Bounds height="40.0" width="40.0" x="780.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="prepareContract" id="BPMNShape_prepareContract">
-        <omgdc:Bounds height="55.0" width="105.0" x="850.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="990.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mortgage" id="BPMNShape_mortgage">
-        <omgdc:Bounds height="55.0" width="105.0" x="990.0" y="213.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1120.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="makeLoans" id="BPMNShape_makeLoans">
-        <omgdc:Bounds height="55.0" width="105.0" x="1140.0" y="213.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1532.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1280.0" y="223.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1660.0" y="221.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="423.0" y="320.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="businessruletask1" id="BPMNShape_businessruletask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="1410.0" y="350.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="transferOwnership" id="BPMNShape_transferOwnership">
+        <omgdc:Bounds height="55.0" width="105.0" x="850.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="assess" id="BPMNShape_assess">
+        <omgdc:Bounds height="55.0" width="105.0" x="1260.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="getHisRight" id="BPMNShape_getHisRight">
+        <omgdc:Bounds height="55.0" width="105.0" x="1400.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="237.0"></omgdi:waypoint>
@@ -126,21 +137,33 @@
         <omgdi:waypoint x="820.0" y="238.0"></omgdi:waypoint>
         <omgdi:waypoint x="850.0" y="238.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="955.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="990.0" y="240.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="440.0" y="258.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="320.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="1095.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1140.0" y="240.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="1245.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1280.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1637.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1660.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="955.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="990.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="1095.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1120.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="1225.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1260.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="1365.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1400.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="1505.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1532.0" y="238.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

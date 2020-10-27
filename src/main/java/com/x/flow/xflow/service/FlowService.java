@@ -46,6 +46,11 @@ import com.x.flow.xflow.vo.HistoricTaskInstanceVo;
 import com.x.flow.xflow.vo.ProcessDefinitionVo;
 import com.x.flow.xflow.vo.TaskVo;
 
+/**
+ * 流程服务
+ * @author 老徐
+ *
+ */
 @Service
 public class FlowService {
 
@@ -431,12 +436,22 @@ public class FlowService {
         }
     }
 
+    /**
+              * 获取流程定义图片
+     * @param pid
+     * @return
+     */
 	public InputStream getDefinitionImage(String pid) {
 		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(pid).singleResult();
         InputStream inputStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(), processDefinition.getDiagramResourceName());
         return inputStream;
 	}
 
+	/**
+	 * 获取当前流程的进度图
+	 * @param pid
+	 * @return
+	 */
 	public InputStream currentProcessInstanceImageByPid(String pid) {
 		TaskVo task = queryActiveTask(pid);
 		return currentProcessInstanceImageByTaskId(task.getId());
@@ -515,8 +530,34 @@ public class FlowService {
 	 */
 	public List<HistoricTaskInstance> listHistoricTaskByVar(Long cid) {
 		List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().list();
-		for(HistoricTaskInstance hiTask : list) {
-		}
+		List<HistoricTaskInstanceVo> hiTasks = new ArrayList<HistoricTaskInstanceVo>();
+		
+		if (list != null && list.size() > 0) {
+            for (HistoricTaskInstance hti : list) {
+                //log.debug(hti.getId() + "    " + hti.getName() + "    " + hti.getProcessInstanceId() + "   " + hti.getStartTime() + "   " + hti.getEndTime() + "   " + hti.getDurationInMillis());
+                //log.debug("################################");
+
+                HistoricTaskInstanceVo historicTaskInstanceVo = ViewObjectConverter.objToBeanVo(hti, HistoricTaskInstanceVo.class);
+                if (historicTaskInstanceVo != null) {
+
+                    List<HistoricVariableInstance> list2 = historyService.createHistoricVariableInstanceQuery().taskId(hti.getId()).list();
+                    if (list2 != null && list2.size() > 0) {
+
+                        Map<String, Object> variables = new HashMap<>();
+                        for (HistoricVariableInstance historicVariableInstance : list2) {
+                            variables.put(historicVariableInstance.getVariableName(), historicVariableInstance.getValue());
+                        }
+                        historicTaskInstanceVo.setVariables(variables);
+                    }
+
+
+                    hiTasks.add(historicTaskInstanceVo);
+                }
+
+            }
+        }
+		
+		
 		return list;
 	}
 	

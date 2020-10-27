@@ -1,15 +1,15 @@
 package com.x.flow.xflow.entity;
 
-import java.util.List;
+//import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+//import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
+//import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -26,14 +26,13 @@ public class User {
 	@ColumnType(jdbcType = JdbcType.INTEGER)
 	private Integer id;
 	
-	@Column(name = "nick")
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private String nick;
+//	@Column(name = "nick")
+//	@ColumnType(jdbcType = JdbcType.VARCHAR)
+//	private String nick;
 	
-
-	@Column(name = "avatar")
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private String avatar;
+//	@Column(name = "avatar")
+//	@ColumnType(jdbcType = JdbcType.VARCHAR)
+//	private String avatar;
 	
 	
 	@Column(name = "name")
@@ -43,29 +42,29 @@ public class User {
 	public static final int TYPE_IDCARD = 1;
 	public static final int TYPE_JG = 2;
 	
-	@Column(name = "idcardtype")
-	@ColumnType(jdbcType = JdbcType.TINYINT)
-	private Integer idcardtype;
+//	@Column(name = "idcardtype")
+//	@ColumnType(jdbcType = JdbcType.TINYINT)
+//	private Integer idcardtype;
 	
-	@Column(name = "idcardnum")
-	@ColumnType(jdbcType = JdbcType.CHAR)
-	private String idcardnum;
+//	@Column(name = "idcardnum")
+//	@ColumnType(jdbcType = JdbcType.CHAR)
+//	private String idcardnum;
 	
-	public Integer getIdcardtype() {
-		return idcardtype;
-	}
-
-	public void setIdcardtype(Integer idcardtype) {
-		this.idcardtype = idcardtype;
-	}
-
-	public String getIdcardnum() {
-		return idcardnum;
-	}
-
-	public void setIdcardnum(String idcardnum) {
-		this.idcardnum = idcardnum;
-	}
+//	public Integer getIdcardtype() {
+//		return idcardtype;
+//	}
+//
+//	public void setIdcardtype(Integer idcardtype) {
+//		this.idcardtype = idcardtype;
+//	}
+//
+//	public String getIdcardnum() {
+//		return idcardnum;
+//	}
+//
+//	public void setIdcardnum(String idcardnum) {
+//		this.idcardnum = idcardnum;
+//	}
 	
 	@Column(name = "phone")
 	@ColumnType(jdbcType = JdbcType.CHAR)
@@ -75,9 +74,9 @@ public class User {
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String password;
 	
-	@Column(name = "wxunionid")
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private String wxunionid;
+//	@Column(name = "wxunionid")
+//	@ColumnType(jdbcType = JdbcType.VARCHAR)
+//	private String wxunionid;
 
 	@Transient
 	private Set<Role> roles;
@@ -94,30 +93,30 @@ public class User {
 //	@ColumnType(jdbcType = JdbcType.TIMESTAMP)
 //	private Date lastlogintime;
 
-	@Transient
-    private int age;//年龄，年龄是实时计算的
+//	@Transient
+//    private int age;//年龄，年龄是实时计算的
+//    
+//    @Transient
+//    private int subscribe;//是否关注微信公众号
     
-    @Transient
-    private int subscribe;//是否关注微信公众号
-    
-    @Transient
-    private String sessionID;
+//    @Transient
+//    private String sessionID;
 	
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public int getSubscribe() {
-		return subscribe;
-	}
-
-	public void setSubscribe(int subscribe) {
-		this.subscribe = subscribe;
-	}
+//	public int getAge() {
+//		return age;
+//	}
+//
+//	public void setAge(int age) {
+//		this.age = age;
+//	}
+//
+//	public int getSubscribe() {
+//		return subscribe;
+//	}
+//
+//	public void setSubscribe(int subscribe) {
+//		this.subscribe = subscribe;
+//	}
 
 	public Integer getId() {
 		return id;
@@ -127,21 +126,21 @@ public class User {
 		this.id = id;
 	}
 
-	public String getNick() {
-		return nick;
-	}
+//	public String getNick() {
+//		return nick;
+//	}
+//
+//	public void setNick(String nick) {
+//		this.nick = nick;
+//	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+//	public String getAvatar() {
+//		return avatar;
+//	}
+//
+//	public void setAvatar(String avatar) {
+//		this.avatar = avatar;
+//	}
 	
 	public String getName() {
 		return name;
@@ -167,13 +166,13 @@ public class User {
 		this.password = password;
 	}
 
-	public String getWxunionid() {
-		return wxunionid;
-	}
-
-	public void setWxunionid(String wxunionid) {
-		this.wxunionid = wxunionid;
-	}
+//	public String getWxunionid() {
+//		return wxunionid;
+//	}
+//
+//	public void setWxunionid(String wxunionid) {
+//		this.wxunionid = wxunionid;
+//	}
 //
 //	public Date getCreatetime() {
 //		return createtime;
@@ -191,13 +190,13 @@ public class User {
 //		this.lastlogintime = lastlogintime;
 //	}
 
-	public String getSessionID() {
-		return sessionID;
-	}
-
-	public void setSessionID(String sessionID) {
-		this.sessionID = sessionID;
-	}
+//	public String getSessionID() {
+//		return sessionID;
+//	}
+//
+//	public void setSessionID(String sessionID) {
+//		this.sessionID = sessionID;
+//	}
 
 	public Set<Role> getRoles() {
 		return roles;
@@ -214,6 +213,5 @@ public class User {
 //	public void setWxminiopenid(String wxminiopenid) {
 //		this.wxminiopenid = wxminiopenid;
 //	}
-	
-	
+		
 }

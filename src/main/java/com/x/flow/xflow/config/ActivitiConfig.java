@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
+import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ManagementService;
@@ -67,6 +68,11 @@ public class ActivitiConfig {
     @Bean
     public IdentityService identityService(ProcessEngine processEngine) {
         return processEngine.getIdentityService();
+    }
+    
+    @Bean
+    public FormService formService(ProcessEngine processEngine) {
+    	return processEngine.getFormService();
     }
 	
 }
